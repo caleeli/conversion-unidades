@@ -1,8 +1,10 @@
 <script>
+  import UnitConverter from './UnitConverter';
   let input = "";
   let input_unit = "";
   let target_unit = "";
   let response = "";
+  const converter = new UnitConverter;
 </script>
 
 <main>
@@ -15,13 +17,24 @@
       type="number"
     />
     <select bind:value={input_unit}>
-      <option value="" />
+      <option value="">Input unit of measure</option>
+      {#each Object.keys(converter.units) as unit}
+        <option value={converter.units[unit]}>
+          {unit}
+        </option>
+      {/each}
     </select>
     <select bind:value={target_unit}>
-      <option value="" />
+      <option value="">Target unit of measure</option>
+      {#each Object.keys(converter.units) as unit}
+        <option value={converter.units[unit]}>
+          {unit}
+        </option>
+      {/each}
     </select>
     <input bind:value={response} placeholder="Student response" type="number" />
     <input
+      value={converter.output(input, input_unit, target_unit, response)}
       class="output"
       placeholder="Output"
       readonly
@@ -55,5 +68,13 @@
   }
   .output {
     font-weight: bold;
+  }
+  input {
+    color: gray;
+    background-color: white;
+  }
+  select {
+    color: gray;
+    background-color: white;
   }
 </style>
